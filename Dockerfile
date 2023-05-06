@@ -14,6 +14,9 @@ RUN apt-get -y install ffmpeg
 # copy bot files
 COPY . .
 
+ENV BOT_TOKEN=5726249818:AAESa2XPs-KYytuymMICm6hyRXwmWk-vtCA
+ENV SECRET_TOKEN=WhoLivesInAPineappleUnderTheSea
+
 # final configuration
 EXPOSE 8000
 CMD python3 bot.py --host 0.0.0.0 --port 8000

@@ -100,8 +100,6 @@ async def split(update: Update, context: ContextTypes.DEFAULT_TYPE):
 		vs.remove(split_videos)
 		vs.remove([str(video_name)])
 		logger.info("Removed %s and split videos", video_name)
-		print(sticker.id)
-		print(sticker)
 		await context.bot.delete_message(chat_id=update.effective_chat.id, message_id=sticker.id)
 
 	except error.BadRequest:
@@ -130,6 +128,7 @@ async def split(update: Update, context: ContextTypes.DEFAULT_TYPE):
 		logger.info("Ask user to change split size to suit video duration.")
 		await context.bot.delete_message(chat_id=update.effective_chat.id, message_id=sticker.id)
 	except error.TimedOut:
+     
 		for v in split_videos:
 			if v not in sent_videos:
 				sent_videos.append(v)
