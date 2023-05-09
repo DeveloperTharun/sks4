@@ -13,19 +13,30 @@ class Video_splitter:
 
     def change_seconds(self, new_seconds):
         self.seconds = new_seconds
+
+    
+    def change_split_number(self, new_number):
+        if new_number > 0:
+            self.split_by_number = True
+            self.split_number = new_number
+        else:
+            self.split_by_number = False
+            self.split_number = 0
         
     
-    def find_split_length(filename, split_number):
+    def find_split_length(self, filename, split_number):
         video_length = get_video_length(filename)
+        print(video_length)
         return video_length / split_number
         
 
         
     def split(self, filename, seconds=None):
-        if seconds:
+        if self.split_by_number:
+            seconds = self.find_split_length(filename, self.split_number)
             video_files = split_by_seconds(filename, seconds, "h264")
-        elif self.split_by_number:
-            video_files = split_by_seconds(filename, self.split_number, "h264")
+        elif seconds:
+            video_files = split_by_seconds(filename, seconds, "h264")
         else:
             video_files = split_by_seconds(filename, self.seconds, "h264")
 

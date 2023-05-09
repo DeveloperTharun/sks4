@@ -77,6 +77,39 @@ async def split_size(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         logger.info("Split size change attempt failed")
 
+        
+async def split_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Change seconds a video will be divided into."""
+    try:
+        user_input = update.message.text.split(" ")[1]
+        vs.change_split_number(new_number=int(user_input))
+        await update.message.reply_text(
+            f"Video split number has changed to {user_input} parts.",
+        )
+        logger.info("Video split size changed to %s parts", user_input)
+    except IndexError:
+        # User requests to view split size by /split_size only
+        await update.message.reply_text(
+            f"""
+			Split size of a video is set to: {vs.split_number}
+			You can change the video split size by passing an argument with /split_number.
+			Eg: /split_number 5 (change split number of a video to 5 parts)
+			""",
+        )
+        logger.info("Split number printed to user")
+    except TypeError:
+        await update.message.reply_text(
+            f"""Wrong input. Enter a number as an argument instead. 
+			Eg: /split_number 2 (change split number of a video to 2 parts)
+			""",
+        )
+        logger.info("Split number change attempt failed")
+    except ValueError:
+        await update.message.reply_text(
+            "There is more than one space between the command and the variable.\nTry again",
+        )
+        logger.info("Split size change attempt failed")
+
 
 async def split(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Split video and send files to bot."""
@@ -162,11 +195,13 @@ if __name__ == "__main__":
 
     start_handler = CommandHandler("start", start)
     split_size_handler = CommandHandler("split_size", split_size)
+    split_number_handler = CommandHandler("split_number", split_number)
     video_handler = MessageHandler(filters.VIDEO, split)
     help_handler = CommandHandler("help", help)
     application.add_handler(start_handler)
     application.add_handler(video_handler)
     application.add_handler(split_size_handler)
+    application.add_handler(split_number_handler)
     application.add_handler(help_handler)
 
     application.run_polling()
