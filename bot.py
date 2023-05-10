@@ -77,7 +77,7 @@ async def split_size(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         logger.info("Split size change attempt failed")
 
-        
+
 async def split_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Change seconds a video will be divided into."""
     try:
