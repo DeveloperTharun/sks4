@@ -21,6 +21,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+START, SPLIT_BY_SECOND, SPLIT_BY_PART, VIDEO = range(4)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start bot"""
