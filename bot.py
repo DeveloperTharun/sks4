@@ -12,16 +12,15 @@ from video_splitter import Video_splitter
 import settings
 
 vs = Video_splitter()
+filename = None
 
-## to do
-# host bot
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-START, SPLIT_BY_SECOND, SPLIT_BY_PART, VIDEO = range(4)
+START, VIDEO, SPLIT_BY_SECOND, SPLIT_BY_PART = range(4)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start bot"""
@@ -30,6 +29,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "I am Video Splitter. Send a video. Split size is 30 seconds."
     )
+    
+    return VIDEO
+
+
+async def collect_video(update, context):
+    file_id = update.message.video.file_id
+    new_file = await context.bot.get_file(file_id)
+    video_name = await new_file.download_to_drive("vid/video.mp4")
+    logger.info("Saved %s ", video_name) 
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
