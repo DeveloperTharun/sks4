@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 START, VIDEO, SPLIT_BY_SECOND, SPLIT_BY_PART = range(4)
 
-user = None
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start bot"""
     user = update.message.from_user
@@ -35,11 +34,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def collect_video(update, context):
-
-    try:
-        os.mkdir(f"vid/")
-    except FileExistsError:
-        logger.info("vid folder already exists.")
     file_id = update.message.video.file_id
     new_file = await context.bot.get_file(file_id)
     video_name = await new_file.download_to_drive("vid/video.mp4")
@@ -48,7 +42,7 @@ async def collect_video(update, context):
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send help message to bot."""
-    #user = update.message.from_user
+    user = update.message.from_user
     message = f"""
 	Hello {user.first_name}, welcome to Video Splitter by @yaw_o_k .
 	Commands:
