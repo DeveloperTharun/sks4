@@ -22,10 +22,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-START, VIDEO, SECONDS_OR_PARTS, SPLIT = range(4)
 
 
 class Katana:
+    START, VIDEO, SECONDS_OR_PARTS, SPLIT = range(4)
+    
     def __init__(self, update, context, error, ReplyKeyboardMarkup):
         self.context = context
         self.update = update
@@ -34,7 +35,7 @@ class Katana:
         self.rmk_input = None
         self.rmk = ReplyKeyboardMarkup
         self.user = None
-        self.video_name
+        self.video_name = None
         self.vs = Video_splitter()
         self.error = error
 
@@ -46,7 +47,7 @@ class Katana:
             "Send a video you'd like to split"
         )
 
-        return VIDEO
+        return self.VIDEO
 
     async def collect_video(self):
         try:
@@ -69,7 +70,7 @@ class Katana:
             ),
         )
 
-        return SECONDS_OR_PARTS
+        return self.SECONDS_OR_PARTS
 
     async def collect_seconds(self):
         self.rmk_input = self.update.message.text
@@ -78,7 +79,7 @@ class Katana:
             "Enter seconds"
         )
 
-        return SPLIT
+        return self.SPLIT
 
     async def collect_parts(self):
         self.rmk_input = self.update.message.text
@@ -87,7 +88,7 @@ class Katana:
             "Enter number of parts"
         )
 
-        return SPLIT
+        return self.SPLIT
 
     async def split_video(self):
         user_input = int(self.update.message.text)
@@ -157,6 +158,19 @@ class Katana:
                 chat_id=self.update.effective_chat.id, message_id=sticker.id
             )
             
-        return START
+        return self.START
     
-    
+    async def help(self):
+        """Send help message to bot."""
+        user = self.update.message.from_user
+        message = f"""
+        Hello {self.user.first_name}, welcome to Katana by @yaw_o_k .
+        Commands:
+        /start : Start the bot
+        /help : Show this information
+        /split_size (args: seconds): Change split size seconds. eg "/split_size 5" ie. Changes split size from 30 seconds(default) to 5 seconds
+        """
+        logger.info("%s started the bot", user.first_name.title())
+        await self.update.message.reply_text(message)
+
+        return self.START

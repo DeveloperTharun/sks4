@@ -210,23 +210,29 @@ if __name__ == "__main__":
     conversation = ConversationHandler(
         entry_points=[CommandHandler("start", katana.start)],
         states={
-            
-        }
+            katana.VIDEO: [MessageHandler(filters.VIDEO, katana.collect_video)],
+            katana.SECONDS_OR_PARTS: [
+                MessageHandler(filters.Regex("^Seconds$"), katana.collect_seconds),
+                MessageHandler(filters.Regex("^Parts$"), katana.collect_parts),
+                ],
+            katana.SPLIT: [MessageHandler(filters.Text, katana.split_video)],
+        },
+        fallbacks=[CommandHandler("help", katana.help)]
         )
 
 
 
 
-    start_handler = CommandHandler("start", katana.start)
+    """ start_handler = CommandHandler("start", katana.start)
     split_size_handler = CommandHandler("split_size", split_size)
     split_number_handler = CommandHandler("split_number", split_number)
     video_handler = MessageHandler(filters.VIDEO, split)
-    help_handler = CommandHandler("help", help)
-    application.add_handler(start_handler)
-    application.add_handler(video_handler)
-    application.add_handler(split_size_handler)
-    application.add_handler(split_number_handler)
-    application.add_handler(help_handler)
+    help_handler = CommandHandler("help", help) """
+    application.add_handler(conversation)
+    # application.add_handler(video_handler)
+    # application.add_handler(split_size_handler)
+    # application.add_handler(split_number_handler)
+    # application.add_handler(help_handler)
 
     application.run_polling()
 """
