@@ -14,7 +14,7 @@ RUN apt-get -y install ffmpeg
 # copy bot files
 COPY . .
 
-ENV BOT_TOKEN=5726249818:AAESa2XPs-KYytuymMICm6hyRXwmWk-vtCA
+ENV BOT_TOKEN=7147201914:AAHUlF48y0HvgvPdYpSjOsaI85exVDTi8XM
 ENV SECRET_TOKEN=WhoLivesInAPineappleUnderTheSea
 
 # final configuration
